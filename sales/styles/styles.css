@@ -496,7 +496,7 @@ body > header {
   }
   .faas-header{
     padding-left: 15px;
-    display: flex;
+    display: none;
     flex-direction: column;
   }
 
