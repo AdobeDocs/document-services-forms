@@ -11,127 +11,127 @@
 
 <body>
 
-<script src="marketo-form-loader.js"></script>
-<script>
-    function getEnvironment() {
-        const host = window.location.host;
-        const referrer = document.referrer || '';
-        if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0 || referrer.indexOf('developer-stage') >= 0) {
-            return 'stage';
-        } else if (host.indexOf('developer.adobe.com') >= 0 || referrer.indexOf('developer.adobe.com') >= 0) {
-            return 'prod';
+    <script src="marketo-form-loader.js"></script>
+    <script>
+        function getEnvironment() {
+            const host = window.location.host;
+            const referrer = document.referrer || '';
+            if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0 || referrer.indexOf('developer-stage') >= 0) {
+                return 'stage';
+            } else if (host.indexOf('developer.adobe.com') >= 0 || referrer.indexOf('developer.adobe.com') >= 0) {
+                return 'prod';
+            }
         }
-    }
 
-    const env = getEnvironment();
+        const env = getEnvironment();
 
-    function logInConsole(title, message) {
-        if (env === 'stage') {
-            console.log(title, message);
+        function logInConsole(title, message) {
+            if (env === 'stage') {
+                console.log(title, message);
+            }
         }
-    }
 
-    // 2. Load Marketo form only after IMS is ready and user profile is fetched
-    function initMarketoForm() {
-        loadMarketoForm({
-            form_config: {
-                form_id_base: 2277,
-                form_id_program: 4061,
+        // 2. Load Marketo form only after IMS is ready and user profile is fetched
+        function initMarketoForm() {
+            loadMarketoForm({
+                form_config: {
+                    form_id_base: 2277,
+                    form_id_program: 4061,
 
-                poi: "Document Services",
+                    poi: "Document Services",
 
-                campaignIds: {
-                    sfdc: "7015Y0000048OFxQAM",
-                    external: "",
-                    retouch: "",
-                    onsite: "",
-                    cgen: "",
-                    cuid: "",
-                },
-
-                copartnernames: "",
-
-                success: {
-                    type: "message",
-                    content: "Thank You",
-                },
-
-                templateOverrides: {
-                    template: "",
-                    purpose: ["whitepaper_form"],
-                    known_visitor:  false,
-                    auto_success:   false,
-                    create_inquiry: true,
-                    field_visibility: {
-                        name: "required",
-                        phone: "required",
-                        company: "required",
-                        website: "hidden",
-                        state: "hidden",
-                        postcode: "hidden",
-                        company_size: "hidden",
-                        demo: "hidden",
-                        comments: "hidden",
+                    campaignIds: {
+                        sfdc: "7015Y0000048OFxQAM",
+                        external: "",
+                        retouch: "",
+                        onsite: "",
+                        cgen: "",
+                        cuid: "",
                     },
 
-                    field_filters: {
-                        functional_area: "hidden",
-                        products: "hidden",
-                        industry: "hidden",
-                        job_role: "all",
-                    }
+                    copartnernames: "",
+
+                    success: {
+                        type: "message",
+                        content: "Thank You",
+                    },
+
+                    templateOverrides: {
+                        template: "",
+                        purpose: ["whitepaper_form"],
+                        known_visitor: false,
+                        auto_success: false,
+                        create_inquiry: true,
+                        field_visibility: {
+                            name: "required",
+                            phone: "required",
+                            company: "required",
+                            website: "hidden",
+                            state: "hidden",
+                            postcode: "hidden",
+                            company_size: "hidden",
+                            demo: "hidden",
+                            comments: "hidden",
+                        },
+
+                        field_filters: {
+                            functional_area: "hidden",
+                            products: "hidden",
+                            industry: "hidden",
+                            job_role: "all",
+                        }
+                    },
+
+                    // IMS values are set on window.* before this function is called
+                    prefillFields: {
+                        FirstName: window.imsUserFirstName,
+                        LastName: window.imsUserLastName,
+                        Email: window.imsUserEmail,
+                        Country: window.imsCountryCode,
+                        pmProductionCampaignId: "7015Y0000048OFxQAM",
+                        pmOnsiteCampaignId: "",
+                        pmRetouchCampaignId: "",
+                        pmExternalCampaignId: "",
+                        cGenTagId: "",
+                        productofInterest: "Document Services",
+                        mktoFormsJobTitle: "OTHER",
+                        mktoConsentNotice: "",
+                    },
                 },
 
-                // IMS values are set on window.* before this function is called
-                prefillFields: {
-                    FirstName: window.imsUserFirstName,
-                    LastName:  window.imsUserLastName,
-                    Email:     window.imsUserEmail,
-                    Country:   window.imsCountryCode,
-                    pmProductionCampaignId: "7015Y0000048OFxQAM",
-                    pmOnsiteCampaignId: "",
-                    pmRetouchCampaignId: "",
-                    pmExternalCampaignId: "",
-                    cGenTagId: "",
-                    productofInterest: "Document Services",
-                    mktoFormsJobTitle: "OTHER",
-                    mktoConsentNotice: "",
+                demo_ux: {
+                    snippetDestination: null,
+                    formDestinationElement: ".marketo-form-wrapper",
+                    loadCss: false,
                 },
-            },
 
-            demo_ux: {
-                snippetDestination:     null,
-                formDestinationElement: ".marketo-form-wrapper",
-                loadCss: false,
-            },
-
-            form_architecture: {
-                previewMode: false,
-                stage:       false,
-                munchkinId:     "360-KCI-804",
-                instanceDomain: "engage.adobe.com",
-                mktoFormJS:     "/js/forms2/js/forms2.min.js",
-                formSubmitPath: "/index.php/leadCapture/save2",
-                stageSettings: {
-                    munchkinId:     "371-GBU-660",
-                    formId:         1212,
-                    instanceDomain: "371-GBU-660.mktoweb.com",
-                    formCss:        "https://business.adobe.com/libs/blocks/marketo/marketo.css",
+                form_architecture: {
+                    previewMode: false,
+                    stage: false,
+                    munchkinId: "360-KCI-804",
+                    instanceDomain: "engage.adobe.com",
+                    mktoFormJS: "/js/forms2/js/forms2.min.js",
+                    formSubmitPath: "/index.php/leadCapture/save2",
+                    stageSettings: {
+                        munchkinId: "371-GBU-660",
+                        formId: 1212,
+                        instanceDomain: "371-GBU-660.mktoweb.com",
+                        formCss: "https://business.adobe.com/libs/blocks/marketo/marketo.css",
+                    },
                 },
-            },
 
-        }).then((form) => {
-            logInConsole("Inside Marketo form ready callback");
-            document.querySelector(".ica-faas-header").style.display = "flex";
+            }).then((form) => {
+                logInConsole("Inside Marketo form ready callback");
+                document.querySelector(".ica-faas-header").style.display = "flex";
 
-            const formEl = form.getFormElem && form.getFormElem()[0];
-            if (formEl) {
-                formEl.classList.add("mktoForm--fade-in");
-                formEl.style.opacity = "1";
-                formEl.style.visibility = "visible";
+                const formEl = form.getFormElem && form.getFormElem()[0];
+                if (formEl) {
+                    formEl.classList.add("mktoForm--fade-in");
+                    formEl.style.opacity = "1";
+                    formEl.style.visibility = "visible";
 
-                const style = document.createElement('style');
-                style.textContent = `
+                    const style = document.createElement('style');
+                    style.textContent = `
                     .marketo-form-wrapper { max-width: none !important; width: calc(100% - 40px) !important; margin: 0 !important; }
                     #mktoForm_4061 { display: block !important; width: 100% !important; }
                     #mktoForm_4061 .mktoFormRow:not(.mktoHtmlText) { display: none !important; }
@@ -156,155 +156,157 @@
                     #mktoForm_4061 .mktoFieldDescriptor:has([name="Country"]) { display: none !important; }
                     #mktoForm_4061 .mktoFormRow:has([name="mktoFormsJobTitle"]) { display: none !important; }
                 `;
-                document.head.appendChild(style);
-            }
-
-            function showFieldError(input, message) {
-                input.nextElementSibling?.classList.contains('ica-field-error') && input.nextElementSibling.remove();
-                const err = document.createElement('div');
-                err.className = 'ica-field-error';
-                err.textContent = message;
-                input.insertAdjacentElement('afterend', err);
-            }
-
-            function clearFieldError(input) {
-                input.nextElementSibling?.classList.contains('ica-field-error') && input.nextElementSibling.remove();
-            }
-
-            formEl.addEventListener('click', function (e) {
-                if (!e.target.classList.contains('mktoButton')) return;
-
-                const phoneInput = formEl.querySelector('[name="Phone"]');
-                const companyInput = formEl.querySelector('[name="mktoFormsCompany"]');
-                const phone = (phoneInput?.value || '').trim();
-                const company = (companyInput?.value || '').trim();
-                let valid = true;
-
-                if (!phone) {
-                    showFieldError(phoneInput, 'This field is required.');
-                    valid = false;
-                } else if (!/^\+?[\d\s\-().]{7,20}$/.test(phone)) {
-                    showFieldError(phoneInput, 'Please enter a valid phone number.');
-                    valid = false;
-                } else {
-                    clearFieldError(phoneInput);
+                    document.head.appendChild(style);
                 }
 
-                if (!company) {
-                    showFieldError(companyInput, 'This field is required.');
-                    valid = false;
-                } else if (/^\d+$/.test(company)) {
-                    showFieldError(companyInput, 'Please enter a valid organization name.');
-                    valid = false;
-                } else {
-                    clearFieldError(companyInput);
+                function showFieldError(input, message) {
+                    input.nextElementSibling?.classList.contains('ica-field-error') && input.nextElementSibling.remove();
+                    const err = document.createElement('div');
+                    err.className = 'ica-field-error';
+                    err.textContent = message;
+                    input.insertAdjacentElement('afterend', err);
                 }
 
-                if (!valid) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    return;
+                function clearFieldError(input) {
+                    input.nextElementSibling?.classList.contains('ica-field-error') && input.nextElementSibling.remove();
                 }
 
-                // Set job title before Marketo's button handler calls validate.
-                const jobTitleEl = formEl.querySelector('[name="mktoFormsJobTitle"]');
-                if (jobTitleEl) jobTitleEl.value = "OTHER";
+                formEl.addEventListener('click', function (e) {
+                    if (!e.target.classList.contains('mktoButton')) return;
 
-            }, true);
+                    const phoneInput = formEl.querySelector('[name="Phone"]');
+                    const companyInput = formEl.querySelector('[name="mktoFormsCompany"]');
+                    const phone = (phoneInput?.value || '').trim();
+                    const company = (companyInput?.value || '').trim();
+                    let valid = true;
 
-            form.onValidate(function (valid) {
-                if (valid) form.submittable(true);
+                    if (!phone) {
+                        showFieldError(phoneInput, 'This field is required.');
+                        valid = false;
+                    } else if (!/^\+?[\d\s\-().]{7,20}$/.test(phone)) {
+                        showFieldError(phoneInput, 'Please enter a valid phone number.');
+                        valid = false;
+                    } else {
+                        clearFieldError(phoneInput);
+                    }
+
+                    if (!company) {
+                        showFieldError(companyInput, 'This field is required.');
+                        valid = false;
+                    } else if (/^\d+$/.test(company)) {
+                        showFieldError(companyInput, 'Please enter a valid organization name.');
+                        valid = false;
+                    } else {
+                        clearFieldError(companyInput);
+                    }
+
+                    if (!valid) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        return;
+                    }
+
+                    // Set job title before Marketo's button handler calls validate.
+                    const jobTitleEl = formEl.querySelector('[name="mktoFormsJobTitle"]');
+                    if (jobTitleEl) jobTitleEl.value = "OTHER";
+
+                }, true);
+
+                form.onValidate(function (valid) {
+                    if (valid) form.submittable(true);
+                });
+
+                // Wait for MCZ to attach its Country change listener, then fire it so
+                // field_change_country() calculates and sets mktoConsentNotice automatically.
+                const countryField = formEl && formEl.querySelector('[name="Country"]');
+                if (countryField && countryField.value) {
+                    const triggerConsent = () => {
+                        countryField.dispatchEvent(new Event('change', { bubbles: true }));
+                    };
+                    if (countryField.classList.contains('fnc_field_change_country')) {
+                        triggerConsent();
+                    } else {
+                        const observer = new MutationObserver(() => {
+                            if (countryField.classList.contains('fnc_field_change_country')) {
+                                observer.disconnect();
+                                triggerConsent();
+                            }
+                        });
+                        observer.observe(countryField, { attributes: true, attributeFilter: ['class'] });
+                    }
+                }
+
+                window.parent.postMessage('afterYiiLoadedCallback executed', '*');
+
+                form.onSuccess(function () {
+                    logInConsole("Inside Marketo form success callback");
+                    window.parent.postMessage('afterSubmitCallback executed', '*');
+                    return false;
+                });
+
+            }).catch((error) => {
+                console.error("Failed to load Marketo form:", error);
             });
+        }
 
-            // Wait for MCZ to attach its Country change listener, then fire it so
-            // field_change_country() calculates and sets mktoConsentNotice automatically.
-            const countryField = formEl && formEl.querySelector('[name="Country"]');
-            if (countryField && countryField.value) {
-                const triggerConsent = () => {
-                    countryField.dispatchEvent(new Event('change', { bubbles: true }));
-                };
-                if (countryField.classList.contains('fnc_field_change_country')) {
-                    triggerConsent();
+        // 3. IMS setup — calls initMarketoForm() once profile is ready
+        window.adobeid = {
+            client_id: "dc-services-self-onboarding",
+            scope: "AdobeID,openid,DCAPI",
+            environment: env === "stage" ? "stg1" : "prod",
+            autoValidateToken: true,
+            async onReady() {
+                logInConsole('Adobe IMS ready');
+                if (window.adobeIMS.isSignedInUser()) {
+                    logInConsole('User is signed in');
+                    const imsUserProfile = await adobeIMS.getProfile();
+                    logInConsole('User profile', imsUserProfile);
+                    window.imsUserFirstName = imsUserProfile.first_name;
+                    window.imsUserLastName = imsUserProfile.last_name;
+                    window.imsUserEmail = imsUserProfile.email;
+                    window.imsCountryCode = imsUserProfile.countryCode;
+                    document.getElementById('userGreeting').textContent = `Hello ${window.imsUserFirstName}!`;
+                    initMarketoForm();
                 } else {
-                    const observer = new MutationObserver(() => {
-                        if (countryField.classList.contains('fnc_field_change_country')) {
-                            observer.disconnect();
-                            triggerConsent();
-                        }
-                    });
-                    observer.observe(countryField, { attributes: true, attributeFilter: ['class'] });
+                    logInConsole('User is not signed in, proceeding without IMS...');
+                    if (window !== window.parent) {
+                        // Render the form instead of posting userNotSignedIn, avoiding blocked iframe redirect
+                        initMarketoForm();
+                    } else {
+                        window.adobeIMS.signIn();
+                    }
                 }
-            }
+            },
+        };
 
-            window.parent.postMessage('afterYiiLoadedCallback executed', '*');
+        const imsLibScript = window.document.createElement("script");
+        if (env === "stage") {
+            imsLibScript.setAttribute("src", "https://auth-stg1.services.adobe.com/imslib/imslib.js");
+        } else {
+            imsLibScript.setAttribute("src", "https://auth.services.adobe.com/imslib/imslib.min.js");
+        }
+        window.document.head.appendChild(imsLibScript);
+    </script>
 
-            form.onSuccess(function () {
-                logInConsole("Inside Marketo form success callback");
-                window.parent.postMessage('afterSubmitCallback executed', '*');
-                return false;
-            });
-
-        }).catch((error) => {
-            console.error("Failed to load Marketo form:", error);
-        });
-    }
-
-    // 3. IMS setup — calls initMarketoForm() once profile is ready
-    window.adobeid = {
-        client_id: "dc-services-self-onboarding",
-        scope: "AdobeID,openid,DCAPI",
-        environment: env === "stage" ? "stg1" : "prod",
-        autoValidateToken: true,
-        async onReady() {
-            logInConsole('Adobe IMS ready');
-            if (window.adobeIMS.isSignedInUser()) {
-                logInConsole('User is signed in');
-                const imsUserProfile = await adobeIMS.getProfile();
-                logInConsole('User profile', imsUserProfile);
-                window.imsUserFirstName = imsUserProfile.first_name;
-                window.imsUserLastName  = imsUserProfile.last_name;
-                window.imsUserEmail     = imsUserProfile.email;
-                window.imsCountryCode   = imsUserProfile.countryCode;
-                document.getElementById('userGreeting').textContent = `Hello ${window.imsUserFirstName}!`;
-                initMarketoForm();
-            } else {
-                logInConsole('User is not signed in, signing in...');
-                if (window !== window.parent) {
-                    window.parent.postMessage('userNotSignedIn', '*');
-                } else {
-                    window.adobeIMS.signIn();
-                }
-                logInConsole('User is not signed in');
-            }
-        },
-    };
-
-    const imsLibScript = window.document.createElement("script");
-    if (env === "stage") {
-        imsLibScript.setAttribute("src", "https://auth-stg1.services.adobe.com/imslib/imslib.js");
-    } else {
-        imsLibScript.setAttribute("src", "https://auth.services.adobe.com/imslib/imslib.min.js");
-    }
-    window.document.head.appendChild(imsLibScript);
-</script>
-
-<div class="resource-form">
-    <div>
+    <div class="resource-form">
         <div>
-            <div class="ica-faas-header">
-                <div id="userGreeting"></div>
-                <div>
-                    Thank you for your interest in Acrobat Services API. Please fill out the form below to get started
-                    with our Free Tier and get access to all 20+ PDF Services including PDF Extract, Document Generation,
-                    Create PDF, PDF Accessibility Auto-Tag and more.
+            <div>
+                <div class="ica-faas-header">
+                    <div id="userGreeting"></div>
+                    <div>
+                        Thank you for your interest in Acrobat Services API. Please fill out the form below to get
+                        started
+                        with our Free Tier and get access to all 20+ PDF Services including PDF Extract, Document
+                        Generation,
+                        Create PDF, PDF Accessibility Auto-Tag and more.
+                    </div>
                 </div>
-            </div>
-            <div class="marketo">
-                <section class="marketo-form-wrapper"></section>
+                <div class="marketo">
+                    <section class="marketo-form-wrapper"></section>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 
 </html>
