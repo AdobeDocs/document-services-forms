@@ -269,8 +269,11 @@
                 initMarketoForm();
             } else {
                 logInConsole('User is not signed in, signing in...');
-                window.parent.postMessage('userNotSignedIn', '*');
-                window.adobeIMS.signIn();
+                if (window !== window.parent) {
+                    window.parent.postMessage('userNotSignedIn', '*');
+                } else {
+                    window.adobeIMS.signIn();
+                }
                 logInConsole('User is not signed in');
             }
         },
