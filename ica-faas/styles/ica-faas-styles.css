@@ -4,7 +4,7 @@ html * {
 }
 
 .ica-faas-header {
-    display: none;
+    display: flex;
     flex-direction: column;
 }
 
@@ -34,13 +34,31 @@ html * {
     padding-bottom: 0;
 }
 
+.row.textfield.FaaS-10 input,
+.row.textfield.FaaS-11 input {
+    width: 250px;
+    min-width: 250px;
+    box-sizing: border-box;
+}
+
 .faas-form label {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
 
 #userGreeting {
-    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-bottom: 12px;
+}
+
+.ica-faas-desc {
+    font-size: 14px;
+    color: #505050;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 600px;
 }
 
 .row.submit {
