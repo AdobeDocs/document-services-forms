@@ -15,9 +15,10 @@
 <script>
     function getEnvironment() {
         const host = window.location.host;
-        if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0) {
+        const referrer = document.referrer || '';
+        if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0 || referrer.indexOf('developer-stage') >= 0) {
             return 'stage';
-        } else if (host.indexOf('developer.adobe.com') >= 0) {
+        } else if (host.indexOf('developer.adobe.com') >= 0 || referrer.indexOf('developer.adobe.com') >= 0) {
             return 'prod';
         }
     }

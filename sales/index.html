@@ -11,112 +11,113 @@
 
 <body>
 
-<script src="marketo-form-loader.js"></script>
-<script>
-    function getEnvironment() {
-        const host = window.location.host;
-        if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0) {
-            return 'stage';
-        } else if (host.indexOf('developer.adobe.com') >= 0) {
-            return 'prod';
+    <script src="marketo-form-loader.js"></script>
+    <script>
+        function getEnvironment() {
+            const host = window.location.host;
+            const referrer = document.referrer || '';
+            if (host.indexOf('local') >= 0 || host.indexOf('developer-stage') >= 0 || referrer.indexOf('developer-stage') >= 0) {
+                return 'stage';
+            } else if (host.indexOf('developer.adobe.com') >= 0 || referrer.indexOf('developer.adobe.com') >= 0) {
+                return 'prod';
+            }
         }
-    }
 
-    const env = getEnvironment();
+        const env = getEnvironment();
 
-    document.addEventListener('DOMContentLoaded', function () {
-    // Clear Marketo's sessionStorage prefill so form starts fresh each load
-    sessionStorage.removeItem('mktoPreFillFields');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Clear Marketo's sessionStorage prefill so form starts fresh each load
+            sessionStorage.removeItem('mktoPreFillFields');
 
-    loadMarketoForm({
-        form_config: {
-            form_id_base: 2277,
-            form_id_program: 4061,
+            loadMarketoForm({
+                form_config: {
+                    form_id_base: 2277,
+                    form_id_program: 4061,
 
-            poi: "Document Services",
+                    poi: "Document Services",
 
-            campaignIds: {
-                sfdc: "7015Y000003pFaCQAU",
-                external: "",
-                retouch: "",
-                onsite: "",
-                cgen: "",
-                cuid: "",
-            },
+                    campaignIds: {
+                        sfdc: "7015Y000003pFaCQAU",
+                        external: "",
+                        retouch: "",
+                        onsite: "",
+                        cgen: "",
+                        cuid: "",
+                    },
 
-            copartnernames: "",
+                    copartnernames: "",
 
-            success: {
-                type: "message",
-                content: "",
-            },
+                    success: {
+                        type: "message",
+                        content: "",
+                    },
 
-            templateOverrides: {
-                template: "",
-                purpose: ["request_for_information"],
-                known_visitor:  false,
-                auto_success:   false,
-                create_inquiry: true,
-                field_visibility: {
-                    name: "required",
-                    phone: "required",
-                    company: "required",
-                    website: "required",
-                    state: "required",
-                    postcode: "visible",
-                    company_size: "required",
-                    demo: "hidden",
-                    comments: "hidden",
+                    templateOverrides: {
+                        template: "",
+                        purpose: ["request_for_information"],
+                        known_visitor: false,
+                        auto_success: false,
+                        create_inquiry: true,
+                        field_visibility: {
+                            name: "required",
+                            phone: "required",
+                            company: "required",
+                            website: "required",
+                            state: "required",
+                            postcode: "visible",
+                            company_size: "required",
+                            demo: "hidden",
+                            comments: "hidden",
+                        },
+
+                        field_filters: {
+                            functional_area: "all",
+                            products: "hidden",
+                            industry: "all",
+                            job_role: "all",
+                        }
+                    },
+
+                    prefillFields: {
+                        pmProductionCampaignId: "7015Y000003pFaCQAU",
+                        pmOnsiteCampaignId: "",
+                        pmRetouchCampaignId: "",
+                        pmExternalCampaignId: "",
+                        cGenTagId: "",
+                        productofInterest: "Document Services",
+                        mktoConsentNotice: "",
+                    },
                 },
 
-                field_filters: {
-                    functional_area: "all",
-                    products: "hidden",
-                    industry: "all",
-                    job_role: "all",
-                }
-            },
+                demo_ux: {
+                    snippetDestination: null,
+                    formDestinationElement: ".marketo-form-wrapper",
+                    loadCss: false,
+                },
 
-            prefillFields: {
-                pmProductionCampaignId: "7015Y000003pFaCQAU",
-                pmOnsiteCampaignId: "",
-                pmRetouchCampaignId: "",
-                pmExternalCampaignId: "",
-                cGenTagId: "",
-                productofInterest: "Document Services",
-                mktoConsentNotice: "",
-            },
-        },
+                form_architecture: {
+                    previewMode: false,
+                    stage: false,
+                    munchkinId: "360-KCI-804",
+                    instanceDomain: "engage.adobe.com",
+                    mktoFormJS: "/js/forms2/js/forms2.min.js",
+                    formSubmitPath: "/index.php/leadCapture/save2",
+                    stageSettings: {
+                        munchkinId: "371-GBU-660",
+                        formId: 1212,
+                        instanceDomain: "371-GBU-660.mktoweb.com",
+                        formCss: "https://business.adobe.com/libs/blocks/marketo/marketo.css",
+                    },
+                },
 
-        demo_ux: {
-            snippetDestination:     null,
-            formDestinationElement: ".marketo-form-wrapper",
-            loadCss: false,
-        },
+            }).then((form) => {
+                document.querySelector(".faas-header").style.display = "flex";
 
-        form_architecture: {
-            previewMode: false,
-            stage:       false,
-            munchkinId:     "360-KCI-804",
-            instanceDomain: "engage.adobe.com",
-            mktoFormJS:     "/js/forms2/js/forms2.min.js",
-            formSubmitPath: "/index.php/leadCapture/save2",
-            stageSettings: {
-                munchkinId:     "371-GBU-660",
-                formId:         1212,
-                instanceDomain: "371-GBU-660.mktoweb.com",
-                formCss:        "https://business.adobe.com/libs/blocks/marketo/marketo.css",
-            },
-        },
+                const formEl = form.getFormElem && form.getFormElem()[0];
 
-    }).then((form) => {
-        document.querySelector(".faas-header").style.display = "flex";
-
-        const formEl = form.getFormElem && form.getFormElem()[0];
-
-        if (formEl) {
-            const style = document.createElement('style');
-            style.textContent = `
+                if (formEl) {
+                    const style = document.createElement('style');
+                    style.textContent = `
                 .marketo-form-wrapper { max-width: none !important; width: calc(100% - 40px) !important; margin: 0 auto !important; }
                 #mktoForm_4061 { width: 100% !important; grid-template-columns: 1fr 1fr !important; }
                 #mktoForm_4061 .mktoField { width: 100% !important; box-sizing: border-box !important; }
@@ -125,165 +126,165 @@
                 #mktoForm_4061 .mktoFormRow.adobe-privacy { display: none !important; }
                 #mktoForm_4061 .mktoButtonRow { display: none !important; }
             `;
-            document.head.appendChild(style);
+                    document.head.appendChild(style);
 
-            formEl.style.setProperty('width', '100%', 'important');
-            formEl.style.setProperty('grid-template-columns', '1fr 1fr', 'important');
-            formEl.setAttribute('autocomplete', 'off');
+                    formEl.style.setProperty('width', '100%', 'important');
+                    formEl.style.setProperty('grid-template-columns', '1fr 1fr', 'important');
+                    formEl.setAttribute('autocomplete', 'off');
 
-            // Clear Marketo cookie-prefilled fields using the proper API
-            form.vals({
-                FirstName: '', LastName: '', Email: '', Phone: '',
-                mktoFormsCompany: '', Website: '', Country: '',
-                State: '', PostalCode: '', mktoCompanySize: '',
-                Industry: '', mktoFormsJobTitle: '', mktoFormsFunctionalArea: '',
-            });
+                    // Clear Marketo cookie-prefilled fields using the proper API
+                    form.vals({
+                        FirstName: '', LastName: '', Email: '', Phone: '',
+                        mktoFormsCompany: '', Website: '', Country: '',
+                        State: '', PostalCode: '', mktoCompanySize: '',
+                        Industry: '', mktoFormsJobTitle: '', mktoFormsFunctionalArea: '',
+                    });
 
-            const selectColorStyle = document.createElement('style');
-            document.head.appendChild(selectColorStyle);
-            document.addEventListener('change', (e) => {
-                if (e.target.tagName !== 'SELECT' || !formEl.contains(e.target)) return;
-                const name = e.target.name;
-                const color = e.target.value ? '#2c2c2c' : '#959595';
-                const existing = selectColorStyle.textContent;
-                const rule = `#mktoForm_4061 select[name="${name}"] { color: ${color} !important; }`;
-                const replaced = existing.replace(new RegExp(`#mktoForm_4061 select\\[name="${name}"\\][^}]+}`, 'g'), '');
-                selectColorStyle.textContent = replaced + rule;
-            }, true);
+                    const selectColorStyle = document.createElement('style');
+                    document.head.appendChild(selectColorStyle);
+                    document.addEventListener('change', (e) => {
+                        if (e.target.tagName !== 'SELECT' || !formEl.contains(e.target)) return;
+                        const name = e.target.name;
+                        const color = e.target.value ? '#2c2c2c' : '#959595';
+                        const existing = selectColorStyle.textContent;
+                        const rule = `#mktoForm_4061 select[name="${name}"] { color: ${color} !important; }`;
+                        const replaced = existing.replace(new RegExp(`#mktoForm_4061 select\\[name="${name}"\\][^}]+}`, 'g'), '');
+                        selectColorStyle.textContent = replaced + rule;
+                    }, true);
 
-            // Inject everything outside the form to avoid Marketo's grid/style stripping
-            // Timeout needed to wait for MCZ to render the consent row legend
-            setTimeout(() => {
-                const consentRow = formEl.querySelector('.mktoFormRow.by-supplyingmycontac');
-                if (consentRow) consentRow.style.setProperty('display', 'none', 'important');
-                const legend = consentRow && consentRow.querySelector('legend');
+                    // Inject everything outside the form to avoid Marketo's grid/style stripping
+                    // Timeout needed to wait for MCZ to render the consent row legend
+                    setTimeout(() => {
+                        const consentRow = formEl.querySelector('.mktoFormRow.by-supplyingmycontac');
+                        if (consentRow) consentRow.style.setProperty('display', 'none', 'important');
+                        const legend = consentRow && consentRow.querySelector('legend');
 
-                // Use case textarea
-                const useCaseDiv = document.createElement('div');
-                useCaseDiv.style.cssText = 'margin: 8px 0;';
-                useCaseDiv.innerHTML = `
+                        // Use case textarea
+                        const useCaseDiv = document.createElement('div');
+                        useCaseDiv.style.cssText = 'margin: 8px 0;';
+                        useCaseDiv.innerHTML = `
                     <label style="display:block;font-size:14px;font-weight:normal;margin-bottom:4px;">Use case <span style="color:#464646;">*</span></label>
                     <textarea id="custom-use-case" rows="6" style="width:100%;box-sizing:border-box;font-size:16px;padding:8px;border:1px solid #6e6e6e;border-radius:4px;"
                         placeholder="Please describe your intended application of our PDF Services APIs."></textarea>`;
 
-                // Custom submit button
-                const submitDiv = document.createElement('div');
-                submitDiv.style.cssText = 'text-align:center; margin: 16px 0;';
-                submitDiv.innerHTML = `<button id="custom-submit" style="background-color:#1473e6;color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:700;padding:8px 24px;cursor:pointer;">Submit</button>`;
+                        // Custom submit button
+                        const submitDiv = document.createElement('div');
+                        submitDiv.style.cssText = 'text-align:center; margin: 16px 0;';
+                        submitDiv.innerHTML = `<button id="custom-submit" style="background-color:#1473e6;color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:700;padding:8px 24px;cursor:pointer;">Submit</button>`;
 
-                // Consent text
-                const consentDiv = document.createElement('div');
-                consentDiv.style.cssText = 'font-size:12px; color:#444; line-height:1.5;';
-                if (legend) consentDiv.innerHTML = legend.innerHTML;
+                        // Consent text
+                        const consentDiv = document.createElement('div');
+                        consentDiv.style.cssText = 'font-size:12px; color:#444; line-height:1.5;';
+                        if (legend) consentDiv.innerHTML = legend.innerHTML;
 
-                const container = formEl.parentNode;
-                const after = formEl.nextSibling;
-                container.insertBefore(useCaseDiv, after);
-                container.insertBefore(submitDiv, useCaseDiv.nextSibling);
-                container.insertBefore(consentDiv, submitDiv.nextSibling);
+                        const container = formEl.parentNode;
+                        const after = formEl.nextSibling;
+                        container.insertBefore(useCaseDiv, after);
+                        container.insertBefore(submitDiv, useCaseDiv.nextSibling);
+                        container.insertBefore(consentDiv, submitDiv.nextSibling);
 
-                function showFieldErr(field, msg) {
-                    const id = 'err-' + field.name;
-                    field.style.setProperty('border-color', '#d0021b', 'important');
-                    const existing = document.getElementById(id);
-                    if (existing) { existing.textContent = msg || 'This field is required.'; return; }
-                    const err = document.createElement('div');
-                    err.id = id;
-                    err.textContent = msg || 'This field is required.';
-                    field.closest('.mktoFieldWrap')?.insertAdjacentElement('afterend', err)
-                        ?? field.insertAdjacentElement('afterend', err);
+                        function showFieldErr(field, msg) {
+                            const id = 'err-' + field.name;
+                            field.style.setProperty('border-color', '#d0021b', 'important');
+                            const existing = document.getElementById(id);
+                            if (existing) { existing.textContent = msg || 'This field is required.'; return; }
+                            const err = document.createElement('div');
+                            err.id = id;
+                            err.textContent = msg || 'This field is required.';
+                            field.closest('.mktoFieldWrap')?.insertAdjacentElement('afterend', err)
+                                ?? field.insertAdjacentElement('afterend', err);
+                        }
+
+                        function clearFieldErr(field) {
+                            field.style.removeProperty('border-color');
+                            const err = document.getElementById('err-' + field.name);
+                            if (err) err.remove();
+                        }
+
+                        document.getElementById('custom-submit').addEventListener('click', () => {
+                            let allValid = true;
+
+                            // Validate all Marketo required fields
+                            formEl.querySelectorAll('.mktoRequired').forEach(field => {
+                                if (!field.value.trim()) {
+                                    showFieldErr(field);
+                                    allValid = false;
+                                } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
+                                    showFieldErr(field, 'Must be a valid email address.');
+                                    allValid = false;
+                                } else if (field.name === 'Phone' && !/^\+?[\d\s\-().]{7,20}$/.test(field.value.trim())) {
+                                    showFieldErr(field, 'Please enter a valid phone number.');
+                                    allValid = false;
+                                } else {
+                                    clearFieldErr(field);
+                                }
+                            });
+
+                            // Validate use case textarea
+                            const ta = document.getElementById('custom-use-case');
+                            if (!ta.value.trim()) {
+                                ta.style.borderColor = '#d0021b';
+                                let err = document.getElementById('use-case-error');
+                                if (!err) {
+                                    err = document.createElement('div');
+                                    err.id = 'use-case-error';
+                                    err.style.cssText = 'color:#d0021b; font-size:12px; margin-top:4px;';
+                                    err.textContent = 'This field is required.';
+                                    ta.after(err);
+                                }
+                                allValid = false;
+                            } else {
+                                ta.style.borderColor = '#6e6e6e';
+                                const err = document.getElementById('use-case-error');
+                                if (err) err.remove();
+                                form.addHiddenFields({ mktoQuestionComments: ta.value });
+                            }
+
+                            if (allValid) formEl.querySelector('.mktoButton').click();
+                        });
+                    }, 500);
                 }
 
-                function clearFieldErr(field) {
-                    field.style.removeProperty('border-color');
-                    const err = document.getElementById('err-' + field.name);
-                    if (err) err.remove();
-                }
-
-                document.getElementById('custom-submit').addEventListener('click', () => {
-                    let allValid = true;
-
-                    // Validate all Marketo required fields
-                    formEl.querySelectorAll('.mktoRequired').forEach(field => {
-                        if (!field.value.trim()) {
-                            showFieldErr(field);
-                            allValid = false;
-                        } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
-                            showFieldErr(field, 'Must be a valid email address.');
-                            allValid = false;
-                        } else if (field.name === 'Phone' && !/^\+?[\d\s\-().]{7,20}$/.test(field.value.trim())) {
-                            showFieldErr(field, 'Please enter a valid phone number.');
-                            allValid = false;
-                        } else {
-                            clearFieldErr(field);
-                        }
-                    });
-
-                    // Validate use case textarea
-                    const ta = document.getElementById('custom-use-case');
-                    if (!ta.value.trim()) {
-                        ta.style.borderColor = '#d0021b';
-                        let err = document.getElementById('use-case-error');
-                        if (!err) {
-                            err = document.createElement('div');
-                            err.id = 'use-case-error';
-                            err.style.cssText = 'color:#d0021b; font-size:12px; margin-top:4px;';
-                            err.textContent = 'This field is required.';
-                            ta.after(err);
-                        }
-                        allValid = false;
-                    } else {
-                        ta.style.borderColor = '#6e6e6e';
-                        const err = document.getElementById('use-case-error');
-                        if (err) err.remove();
-                        form.addHiddenFields({ mktoQuestionComments: ta.value });
-                    }
-
-                    if (allValid) formEl.querySelector('.mktoButton').click();
+                form.onValidate(function (valid) {
+                    if (valid) form.submittable(true);
                 });
-            }, 500);
-        }
 
-        form.onValidate(function (valid) {
-            if (valid) form.submittable(true);
-        });
+                form.onSuccess(function () {
+                    top.location.href = "/document-services/pricing/contact/sales/confirmation";
+                    return false;
+                });
 
-        form.onSuccess(function () {
-            top.location.href = "/document-services/pricing/contact/sales/confirmation";
-            return false;
-        });
+            }).catch((error) => {
+                console.error("Failed to load Marketo form:", error);
+            });
+        }); // DOMContentLoaded
+    </script>
 
-    }).catch((error) => {
-        console.error("Failed to load Marketo form:", error);
-    });
-    }); // DOMContentLoaded
-</script>
-
-<div class="resource-form">
-    <div class="block faas white">
-        <div class="faas-header" style="margin-top: 24px; margin-bottom: 24px;">
-            <div class="caption">
-                Get info about pricing, billing, and licensing.
+    <div class="resource-form">
+        <div class="block faas white">
+            <div class="faas-header" style="margin-top: 24px; margin-bottom: 24px;">
+                <div class="caption">
+                    Get info about pricing, billing, and licensing.
+                </div>
+                <div class="faq-text">
+                    Please visit our
+                    <a class="link-content" target="_blank" href="/document-services/faq/sales/">
+                        FAQ
+                    </a>
+                    or fill out the form below to speak with an Adobe rep.
+                </div>
+                <div class="faq-text">
+                    For technical inquiries, submit a tech support request
+                    <a class="link-content" target="_blank" href="/document-services/pricing/contact/support/">
+                        here.
+                    </a>
+                </div>
             </div>
-            <div class="faq-text">
-                Please visit our
-                <a class="link-content" target="_blank" href="/document-services/faq/sales/">
-                    FAQ
-                </a>
-                or fill out the form below to speak with an Adobe rep.
+            <div class="marketo">
+                <section class="marketo-form-wrapper"></section>
             </div>
-            <div class="faq-text">
-                For technical inquiries, submit a tech support request
-                <a class="link-content" target="_blank" href="/document-services/pricing/contact/support/">
-                    here.
-                </a>
-            </div>
-        </div>
-        <div class="marketo">
-            <section class="marketo-form-wrapper"></section>
         </div>
     </div>
-</div>
 </body>
 
 </html>
